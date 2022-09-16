@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AppScm")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b72ced86bca40491fea3d3546d49d6f68f668d8f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5cd6cd53179100c05be789f5e41568a22b592012")]
 [assembly: System.Reflection.AssemblyProductAttribute("AppScm")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AppScm")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,5 +1,7 @@
 
+using AppScm.Domain.Users;
 using AppScm.Endpoints.Categories;
+using AppScm.Endpoints.Clients;
 using AppScm.Endpoints.Employees;
 using AppScm.Endpoints.Products;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -72,6 +74,7 @@ builder.Services.AddAuthentication(x =>
 });
 
 builder.Services.AddScoped<QueryAllUsersWithCLaimName>();
+builder.Services.AddScoped<UserCreator>();
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -94,9 +97,12 @@ app.MapMethods(CategoryGetAll.Template, CategoryGetAll.Methods, CategoryGetAll.H
 app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handle);
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
 app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
+app.MapMethods(OrderPost.Template, OrderPost.Methods, OrderPost.Handle);
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
 app.MapMethods(ProductPost.Template, ProductPost.Methods, ProductPost.Handle);
 app.MapMethods(ProductGetShowcase.Template, ProductGetShowcase.Methods, ProductGetShowcase.Handle);
+app.MapMethods(ClientGet.Template, ClientGet.Methods, ClientGet.Handle);
+
 
 
 app.UseExceptionHandler("/error");

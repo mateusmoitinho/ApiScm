@@ -1,6 +1,7 @@
 ﻿using Amazon.Auth.AccessControlPolicy;
 using AppScm.Domain.Products;
-
+using AppScm.Domain.Users;
+using AppScm.Endpoints.Clients;
 using AppScm.Infra.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,15 +19,9 @@ public class EmployeePost
 
     [Authorize(Policy = "EmployeePolicy")]
 
-    public static async Task  <IResult> Action(EmployeeRequest employeeRequest,HttpContext http,UserManager<IdentityUser> userManager)
+    public static async Task  <IResult> Action(EmployeeRequest employeeRequest,HttpContext http,UserCreator userCreator)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        var newUser = new IdentityUser { UserName = employeeRequest.Email, Email = employeeRequest.Email };
-        var result = await userManager.CreateAsync(newUser, employeeRequest.Password);
-
-        if (!result.Succeeded)
-            return Results.ValidationProblem(result.Errors.ConvertToProblemDetails());
-
 
         var userClaims = new List<Claim>
         {
@@ -35,16 +30,13 @@ public class EmployeePost
             new Claim("CreatedBy",userId),
         };
 
+        (IdentityResult identity, string userId) result =
+        await userCreator.Create(employeeRequest.Email, employeeRequest.Password, userClaims);
 
-        var claimResult = await userManager.AddClaimsAsync(newUser, userClaims);
+        if (!result.identity.Succeeded)
+            return Results.ValidationProblem(result.identity.Errors.ConvertToProblemDetails());
 
 
-           if(!claimResult.Succeeded)
-
-            return Results.BadRequest(claimResult.Errors.First());
-
-          
-
-        return Results.Created($"/employee/{newUser.Id}", newUser.Id);
+        return Results.Created($"/employee/{result.userId}", result.userId);
     }
 }
